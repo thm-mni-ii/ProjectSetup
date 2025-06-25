@@ -1,6 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "extends": "@vue/tsconfig/tsconfig.json",
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
@@ -8,13 +7,21 @@
     "baseUrl": ".",
     
     "paths": { "@/*":["./src/*"] },
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "jsx": "preserve",
+    "moduleResolution": "bundler",
+    "types": ["vite/client"],
     "importHelpers": true,
     "isolatedModules": true,
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
-  }
+  },
+  "include": [
+  "src/**/*.ts",
+  "src/**/*.d.ts",
+  "src/**/*.tsx",
+  "src/**/*.vue"
+]
 }

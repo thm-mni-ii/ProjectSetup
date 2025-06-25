@@ -17,7 +17,8 @@ This repository provides a template for setting up a project with two Databases:
 - Python 3.10 or higher
 - Git (for version control)
 - Docker
-- Node.js (for frontend development)
+- Node.js v22.12.0 (for the Vue.js frontend)
+- Node Version Manager (nvm) (optional, for managing Node.js versions)
 - conda (optional, for managing Python environments)
 
 ### Recommended VS Code Settings

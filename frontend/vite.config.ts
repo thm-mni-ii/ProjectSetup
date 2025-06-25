@@ -13,7 +13,7 @@ export default defineConfig({
         {
           postcssPlugin: "internal:charset-removal",
           AtRule: {
-            charset: (atRule: any) => {
+            charset: (atRule: import("postcss").AtRule) => {
               if (atRule.name === "charset") {
                 atRule.remove();
               }
@@ -30,7 +30,10 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    eslintPlugin(),
+    eslintPlugin({
+      include: ['src/**/*.{js,ts,vue}'],
+      exclude: [/node_modules/, /\.vite/, /virtual:/]
+    }),
     vuetify({
       autoImport: true,
     }),

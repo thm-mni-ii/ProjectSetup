@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import AuthService from '../services/service.auth'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -19,6 +20,35 @@ const router = createRouter({
       component: () => import('../views/ViewRegister.vue')
     }
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  const publicPages = ['/login', '/register']
+  const authRequired = !publicPages.includes(to.path)
+  const loggedIn = localStorage.getItem('token')
+
+  const loginValid = await AuthService.me()
+    .then((response) => {
+      if (response.status === 200) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+        return true
+      } else {
+        localStorage.removeItem('token')
+        return false
+      }
+    })
+    .catch(() => {
+      localStorage.removeItem('token')
+      return false
+    })
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if ((authRequired && !loggedIn) || (authRequired && !loginValid)) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router

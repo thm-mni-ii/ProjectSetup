@@ -16,6 +16,14 @@ class AuthService {
       password
     })
   }
+
+  me(): Promise<AxiosResponse<User>> {
+    return axios.get<User>('/api/me', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+  }
 }
 
 export default new AuthService()

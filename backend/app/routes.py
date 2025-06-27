@@ -38,3 +38,10 @@ def login(data: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Ungültige Anmeldedaten")
     token = create_access_token(user.username)
     return {"access_token": token, "token_type": "bearer"}
+
+
+@router.get("/me", response_model=UserOut)
+def me(user: User = Depends(get_current_user)):
+    """Geschützter Endpoint – liefert den aktuell eingeloggten User."""
+    
+    return UserOut(id=user.id, username=user.username, created_at=user.created_at)

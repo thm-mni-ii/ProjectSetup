@@ -5,9 +5,9 @@
     </v-app-bar-title>
 
     <template #append>
-      <v-btn to="/modeling" active-class="active" prepend-icon="mdi-pencil-ruler">
-        <span> Modellierung </span>
-        <v-tooltip activator="parent" location="bottom"> Modellierung </v-tooltip>
+      <v-btn to="/login" active-class="active" prepend-icon="mdi-login" color="primary" variant="text">
+        <span> Login </span>
+        <v-tooltip activator="parent" location="bottom"> Login </v-tooltip>
       </v-btn>
     </template>
   </v-app-bar>

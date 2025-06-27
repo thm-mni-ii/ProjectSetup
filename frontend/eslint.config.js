@@ -33,7 +33,7 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
         parser: tsEslintParser,
-        extraFileExtensions: ['.vue'],
+        extraFileExtensions: ['.vue']
       },
       globals: {
         ...globals.browser,

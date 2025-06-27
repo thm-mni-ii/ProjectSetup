@@ -1,9 +1,9 @@
-import { fileURLToPath, URL } from "url";
+import { fileURLToPath, URL } from 'url'
 
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import eslintPlugin from "vite-plugin-eslint";
-import vuetify from "vite-plugin-vuetify";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import eslintPlugin from 'vite-plugin-eslint'
+import vuetify from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,22 +11,22 @@ export default defineConfig({
     postcss: {
       plugins: [
         {
-          postcssPlugin: "internal:charset-removal",
+          postcssPlugin: 'internal:charset-removal',
           AtRule: {
-            charset: (atRule: import("postcss").AtRule) => {
-              if (atRule.name === "charset") {
-                atRule.remove();
+            charset: (atRule: import('postcss').AtRule) => {
+              if (atRule.name === 'charset') {
+                atRule.remove()
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/assets/settings.scss" as *;`,
-      },
-    },
+        additionalData: `@use "@/assets/settings.scss" as *;`
+      }
+    }
   },
   plugins: [
     vue(),
@@ -35,23 +35,23 @@ export default defineConfig({
       exclude: [/node_modules/, /\.vite/, /virtual:/]
     }),
     vuetify({
-      autoImport: true,
-    }),
+      autoImport: true
+    })
   ],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   server: {
     host: true,
     port: 8085,
     proxy: {
-      "/api": {
-        target: "http://localhost:8080",
+      '/api': {
+        target: 'http://localhost:80',
         changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
-});
+        secure: false
+      }
+    }
+  }
+})

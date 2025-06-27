@@ -1,14 +1,11 @@
-from typing import Union
-from fastapi import FastAPI
-
-app = FastAPI()
-
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+from fastapi import Depends, FastAPI
+from app.database import engine
+from app.database import Base
+from app.routes import router
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(title="Secondhand Marktplatz API")
+
+app.include_router(router, prefix="/api", tags=["auth"])

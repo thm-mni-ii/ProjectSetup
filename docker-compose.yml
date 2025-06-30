@@ -22,11 +22,21 @@ services:
     volumes:
       - mongodata:/data/db
 
+  redis:
+    image: redis:8.0.2
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass password
+    volumes:
+      - redisdata:/data
+
   backend:
     build: ./backend
     depends_on:
       - postgres
       - mongodb
+      - redis
     ports:
       - "80:80"
 
@@ -39,6 +49,8 @@ volumes:
   pgdata:
     driver: local
   mongodata:
+    driver: local
+  redisdata:
     driver: local
 
 networks:

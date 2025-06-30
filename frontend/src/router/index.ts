@@ -34,11 +34,13 @@ router.beforeEach(async (to, from, next) => {
         return true
       } else {
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
         return false
       }
     })
     .catch(() => {
       localStorage.removeItem('token')
+      localStorage.removeItem('user')
       return false
     })
 

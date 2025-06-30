@@ -7,7 +7,8 @@ from app.config import settings
 from app.database import SessionLocal
 from sqlalchemy.orm import Session
 from app.models import User
-from app.schemas import Token, TokenObj
+from app.schemas import Token, TokenObj, UserOut
+from app.redis_client import redis_client
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -59,3 +60,34 @@ async def get_current_user(
     if not user:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User nicht gefunden")
     return user
+
+
+async def get_current_user_with_cache(
+    creds: HTTPAuthorizationCredentials = Security(bearer),
+    db: Session = Depends(get_db),
+) -> UserOut:
+    """
+    Prüft das Bearer-Token und lädt den User aus Redis-Cache oder Postgres.
+    Cache-First-Strategie für bessere Performance.
+    """
+    token = decode_access_token(creds.credentials)
+    if not token:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Ungültiges Token")
+
+    # Versuche zuerst aus Redis-Cache zu laden
+    cached_user = redis_client.get_user_cache(token.sub)
+    if cached_user:
+        print(f"User {token.sub} aus Redis-Cache geladen")
+        return cached_user
+
+    # Fallback: Lade aus Postgres und speichere in Cache
+    user = db.query(User).filter(User.username == token.sub).first()
+    if not user:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User nicht gefunden")
+
+    # Erstelle UserOut-Objekt und speichere in Cache
+    user_out = UserOut(id=user.id, username=user.username, created_at=user.created_at)
+    redis_client.set_user_cache(user.username, user_out)
+    print(f"User {token.sub} aus Postgres geladen und in Redis gespeichert")
+
+    return user_out

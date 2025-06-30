@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from app.database import engine
 from app.database import Base
 from app.routes import router

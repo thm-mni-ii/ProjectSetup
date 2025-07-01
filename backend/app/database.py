@@ -12,7 +12,7 @@ Base = declarative_base()
 
 # MongoDB
 mongo_client = MongoClient(settings.MONGO_URL)
-mongo_db = mongo_client["marketplace"]
+mongo_db = mongo_client["blog"]
 
 # Redis
 redis_client = redis.Redis.from_url(settings.REDIS_URL, decode_responses=True)

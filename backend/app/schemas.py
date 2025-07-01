@@ -20,38 +20,38 @@ class Token(BaseModel):
 
 
 class TokenObj(BaseModel):
-    sub: str  # Subject, typically the username
-    exp: datetime  # Expiration time of the token
+    sub: str
+    exp: datetime
 
     class Config:
-        orm_mode = True  # Allows Pydantic to work with ORM models
+        orm_mode = True
         json_encoders = {
-            datetime: lambda v: v.isoformat()  # Custom encoder for datetime
+            datetime: lambda v: v.isoformat()
         }
 
 
-# Blog-Post Schemas
-class PostCreate(BaseModel):
-    title: str
-    content: str
+# # Blog-Post Schemas
+# class PostCreate(BaseModel):
+#     title: str
+#     content: str
 
 
-class CommentCreate(BaseModel):
-    text: str
+# class CommentCreate(BaseModel):
+#     text: str
 
 
-class Comment(BaseModel):
-    text: str
-    author_id: str
-    author_username: str
-    created_at: datetime
+# class Comment(BaseModel):
+#     text: str
+#     author_id: str
+#     author_username: str
+#     created_at: datetime
 
 
-class Post(BaseModel):
-    id: str
-    title: str
-    content: str
-    author_id: str
-    author_username: str
-    created_at: datetime
-    comments: List[Comment] = []
+# class Post(BaseModel):
+#     id: str
+#     title: str
+#     content: str
+#     author_id: str
+#     author_username: str
+#     created_at: datetime
+#     comments: List[Comment] = []

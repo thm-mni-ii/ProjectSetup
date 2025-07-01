@@ -10,8 +10,5 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REDIS_CACHE_EXPIRE_MINUTES: int = 60  # Cache-Ablaufzeit in Minuten
 
-    class Config:
-        env_file = ".env"
-
 
 settings = Settings()

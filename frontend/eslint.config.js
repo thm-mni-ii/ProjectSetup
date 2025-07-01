@@ -48,7 +48,8 @@ export default [
 
     rules: {
       'vue/require-default-prop': 'off',
-      'vue/no-mutating-props': 'warn'
+      'vue/no-mutating-props': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn'
     }
   }
 ]

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import List, Optional
 
 
 class UserCreate(BaseModel):
@@ -27,3 +28,30 @@ class TokenObj(BaseModel):
         json_encoders = {
             datetime: lambda v: v.isoformat()  # Custom encoder for datetime
         }
+
+
+# Blog-Post Schemas
+class PostCreate(BaseModel):
+    title: str
+    content: str
+
+
+class CommentCreate(BaseModel):
+    text: str
+
+
+class Comment(BaseModel):
+    text: str
+    author_id: str
+    author_username: str
+    created_at: datetime
+
+
+class Post(BaseModel):
+    id: str
+    title: str
+    content: str
+    author_id: str
+    author_username: str
+    created_at: datetime
+    comments: List[Comment] = []

@@ -1,7 +1,7 @@
 <template>
   <v-app-bar :elevation="2" color="primary" dark prominent class="app-header">
     <v-app-bar-title class="title-text">
-      <router-link to="/" class="title-link"><v-icon size="32" class="mr-2">mdi-storefront</v-icon> Marktplatz </router-link>
+      <router-link to="/" class="title-link"><v-icon size="32" class="mr-2">mdi-post</v-icon> Blog System </router-link>
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
@@ -26,6 +26,19 @@
           </template>
 
           <v-list>
+            <v-list-item @click="$router.push('/posts')">
+              <template #prepend>
+                <v-icon>mdi-post</v-icon>
+              </template>
+              <v-list-item-title>Alle Posts</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item @click="$router.push('/posts/create')">
+              <template #prepend>
+                <v-icon>mdi-plus</v-icon>
+              </template>
+              <v-list-item-title>Neuer Post</v-list-item-title>
+            </v-list-item>
             <v-list-item @click="$router.push('/')">
               <template #prepend>
                 <v-icon>mdi-account</v-icon>

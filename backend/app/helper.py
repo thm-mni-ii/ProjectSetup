@@ -3,6 +3,8 @@ from jose import jwt
 from passlib.context import CryptContext
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends, HTTPException, status, Security
+import psycopg
+from contextlib import contextmanager
 from app.config import settings
 from app.database import SessionLocal
 from sqlalchemy.orm import Session
@@ -91,3 +93,38 @@ async def get_current_user_with_cache(
     print(f"User {token.sub} aus Postgres geladen und in Redis gespeichert")
 
     return user_out
+
+
+# ===============================
+# PSYCOPG RAW SQL CONNECTION
+# ===============================
+
+
+@contextmanager
+def get_raw_db_connection():
+    """
+    Context manager für raw psycopg-Verbindungen ohne ORM.
+    Verwendet für direkte SQL-Queries in den Routes.
+    """
+    conn = None
+    try:
+        conn = psycopg.connect(settings.POSTGRES_URL_PSYCOPG)
+        yield conn
+    finally:
+        if conn:
+            conn.close()
+
+
+def execute_raw_query(query: str, params=None):
+    """
+    Führt eine raw SQL-Query aus und gibt die Ergebnisse zurück.
+    Hilfsfunktion für die Routes.
+    """
+    with get_raw_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            if query.strip().upper().startswith("SELECT"):
+                return cur.fetchall()
+            else:
+                conn.commit()
+                return cur.rowcount

@@ -9,6 +9,7 @@ from app.schemas import UserCreate, UserOut, Token, PostCreate, Post, CommentCre
 from app.models import User
 from app.helper import hash_password, verify_password, create_access_token
 from app.helper import get_db, get_current_user, get_current_user_with_cache
+from app.helper import execute_raw_query
 from app.config import settings
 from app.redis_client import redis_client
 from app.database import mongo_db
@@ -63,7 +64,6 @@ def me(user: UserOut = Depends(get_current_user_with_cache)):
 
 # =============================================================================
 # MONGODB BLOG-SYSTEM ENDPOINTS
-# Demonstriert die Integration von MongoDB als zweite Datenbank
 # =============================================================================
 
 
@@ -261,3 +261,35 @@ async def get_user_posts(user_id: str):
         )
 
     return posts
+
+
+# =============================================================================
+# STATISTIKEN ENDPOINTS - RAW SQL mit psycopg
+# =============================================================================
+
+
+@router.get("/stats/users-by-month")
+async def get_users_by_month():
+    """
+    Nutzerstatistiken - User Registrierungen pro Monat (letzten 12 Monate)
+    Verwendet raw SQL mit psycopg (ohne ORM)
+    """
+    try:
+        query = """
+        SELECT 
+            TO_CHAR(DATE_TRUNC('month', created_at), 'YYYY-MM') as month,
+            COUNT(*) as user_count
+        FROM users 
+        WHERE created_at >= CURRENT_DATE - INTERVAL '12 months'
+        GROUP BY DATE_TRUNC('month', created_at)
+        ORDER BY DATE_TRUNC('month', created_at) DESC
+        """
+
+        results = execute_raw_query(query)
+        stats = [{"month": row[0], "user_count": int(row[1])} for row in results]
+
+        return {"title": "Nutzerregistrierungen pro Monat", "data": stats}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Fehler beim Laden der Nutzerstatistiken: {str(e)}"
+        )

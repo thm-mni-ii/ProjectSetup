@@ -1,6 +1,16 @@
 import axios, { type AxiosResponse } from 'axios'
 import type { Post, PostCreate, CommentCreate } from '@/model/Post'
 
+interface UserStatistic {
+  month: string
+  user_count: number
+}
+
+interface StatisticsResponse<T> {
+  title: string
+  data: T[]
+}
+
 class BlogService {
   // Posts abrufen
   getPosts(skip: number = 0, limit: number = 10): Promise<AxiosResponse<Post[]>> {
@@ -33,6 +43,11 @@ class BlogService {
   // Posts eines bestimmten Users
   getUserPosts(userId: string): Promise<AxiosResponse<Post[]>> {
     return axios.get<Post[]>(`/api/users/${userId}/posts`)
+  }
+
+  // Statistiken - Nutzer pro Monat
+  getUsersByMonth(): Promise<AxiosResponse<StatisticsResponse<UserStatistic>>> {
+    return axios.get<StatisticsResponse<UserStatistic>>('/api/stats/users-by-month')
   }
 }
 

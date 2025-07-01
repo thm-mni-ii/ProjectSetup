@@ -38,10 +38,10 @@
                   </v-card>
                 </v-col>
                 <v-col cols="12" sm="6" md="3">
-                  <v-card variant="outlined" class="pa-3 text-center action-card" hover @click="loadUserStats">
+                  <v-card variant="outlined" class="pa-3 text-center action-card" hover @click="$router.push('/statistics')">
                     <v-icon size="32" color="info" class="mb-2">mdi-chart-line</v-icon>
                     <p class="text-body-2 font-weight-medium mb-1">Statistiken</p>
-                    <p class="text-caption text-medium-emphasis">Meine Posts & Kommentare</p>
+                    <p class="text-caption text-medium-emphasis">Nutzer-Statistiken</p>
                   </v-card>
                 </v-col>
                 <v-col cols="12" sm="6" md="3">
@@ -216,13 +216,6 @@ const formatDate = (dateString: string | Date) => {
 
   &:hover {
     transform: translateY(-1px);
-  }
-
-  .text-truncate {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 }
 </style>

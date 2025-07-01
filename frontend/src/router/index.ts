@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/posts/:id',
       name: 'PostDetail',
       component: () => import('../views/ViewPostDetail.vue')
+    },
+    {
+      path: '/statistics',
+      name: 'Statistics',
+      component: () => import('../views/ViewStatistics.vue')
     }
   ]
 })

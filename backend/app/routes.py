@@ -16,9 +16,6 @@ from app.database import mongo_db
 
 router = APIRouter()
 
-# MongoDB Collections
-posts_collection = mongo_db["posts"]
-
 
 @router.post("/register", response_model=UserOut, status_code=201)
 async def register_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -66,6 +63,8 @@ def me(user: UserOut = Depends(get_current_user_with_cache)):
 # MONGODB BLOG-SYSTEM ENDPOINTS
 # =============================================================================
 
+# MongoDB Collections
+posts_collection = mongo_db["posts"]
 
 @router.post("/posts", response_model=Post, status_code=201)
 async def create_post(

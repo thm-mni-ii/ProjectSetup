@@ -10,6 +10,11 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U user"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
   mongodb:
     image: mongo:6
@@ -22,6 +27,11 @@ services:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+    # healthcheck:
+    #   test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
   redis:
     image: redis:8.0.2
@@ -31,6 +41,11 @@ services:
     command: redis-server --requirepass password
     volumes:
       - redisdata:/data
+    # healthcheck:
+    #   test: ["CMD", "redis-cli", "-a", "password", "ping"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
   backend:
     build: ./backend
